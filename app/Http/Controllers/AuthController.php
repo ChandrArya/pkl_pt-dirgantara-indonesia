@@ -28,7 +28,7 @@ class AuthController extends Controller
             return redirect()->route('kanban.index')->with('success', 'Login berhasil!');
         }
     
-        return back()->withErrors(['email' => 'Email atau password salah!']);
+        return back()->with('error', 'Email atau password salah!');
     }
 
     // Menampilkan halaman register
@@ -42,7 +42,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username',  // Menambahkan parameter 'users,username'
+            'username' => 'required|string|max:255|unique:users,username',  
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
         ]);
@@ -53,6 +53,7 @@ class AuthController extends Controller
             'username'=> $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role'=> 'User',
         ]);
 
         return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');

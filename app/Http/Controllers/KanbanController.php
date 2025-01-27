@@ -6,19 +6,27 @@ use App\Models\Board;
 use App\Models\BoardList;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KanbanController extends Controller
-{
-    public function index()
+{public function index()
     {
         $board = Board::with('boardLists.tasks')->first();
-
+    
         if (!$board) {
-            return redirect()->route('kanban.create')->with('error', 'Board not found. Please create a new board.');
+            $board = Board::create([
+                'name' => 'Default Board', // Sesuaikan dengan kebutuhan
+                'user_id' => Auth::user()->id,
+            ]);
+    
+            return redirect()->route('kanban.index')->with('success', 'Default board created.');
         }
-
+    
         return view('dashboard.kanban', compact('board'));
     }
+    
+
+   
 
 
     public function storeBoardList(Request $request)
