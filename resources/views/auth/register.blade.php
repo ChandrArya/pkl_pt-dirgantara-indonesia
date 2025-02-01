@@ -3,15 +3,23 @@
 @section('title', 'register')
 
 @section('content')
-    <div class="relative" style="background-image:url('bg.jpg'); background-size: cover; background-position: center; height: 100vh;">
+    <div class="relative font-sans" style="background-image:url('bg.jpg'); background-size: cover; background-position: center; height: 100vh;">
         <!-- Overlay Gelap hanya untuk background -->
         <div class="absolute inset-0 bg-black opacity-50"></div>
         
         <!-- Konten Form Login tetap di atas -->
-        <div class="flex flex-col justify-center font-[sans-serif] sm:h-screen p-4 relative z-10">
+        <div class="flex flex-col justify-center sm:h-screen p-4 relative z-10">
+              <!-- Logo dan Judul di Pojok Kiri -->
+              <div class="absolute top-6 left-6 flex items-start space-x-4">
+                <img src="{{ asset('logo.png') }}" alt="Logo" class="w-16 h-16 rounded-full">
+                <div>
+                    <h1 class="text-gray-100 text-xl font-medium uppercase">Task Management Department Spirit</h1>
+                    <h1 class="text-gray-100 text-lg font-medium uppercase">PT. Dirgantara Indonesia</h1>
+                </div>
+            </div>
             <div class="max-w-md w-full mx-auto border bg-white border-gray-300 rounded-2xl p-8">
                 <div class="w-24 h-24 flex items-center justify-center mx-auto">
-                    <img src="{{asset('logo.jpeg')}}" alt="Logo">
+                    <h1 class="text-2xl font-bold font-sans">REGISTER</h1>
                 </div>
 
                 <form action="{{route('post.register')}}" method="POST">
@@ -54,7 +62,7 @@
                             Create an account
                         </button>
                     </div>
-                    <p class="text-gray-800 text-sm mt-6 text-center">Already have an account? <a href="javascript:void(0);"
+                    <p class="text-gray-800 text-sm mt-6 text-center">Already have an account? <a href="{{route('login')}}"
                             class="text-blue-900 font-semibold hover:underline ml-1">Login here</a></p>
                 </form>
             </div>

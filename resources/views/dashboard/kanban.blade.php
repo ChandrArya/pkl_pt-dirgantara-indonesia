@@ -8,19 +8,28 @@
 
 @section('content')
 
-    <div class="p-6 bg-blue-900">
+@if (session('gagal'))
+<div class="bg-red-500 text-white p-4 rounded mb-4">
+    {{ session('gagal') }}
+</div>
+@endif
+
+
+    <div class="p-6 bg-gradient-to-r from-blue-400 to-purple-400"  data-aos="fade-up" data-aos-duration="1000">
         <h2 class="text-4xl text-white font-semibold text-center ">Kanban Spirit Dirgantara</h2>
-        <!-- Button to trigger modal -->
         <button onclick="openAddListModal()"
-            class="mt-4 bg-green-500 text-white rounded-lg py-2 px-4 text-sm font-medium hover:bg-green-600 transition">
-            Add New List
+            class="mt-4 bg-green-500 text-white rounded-lg py-2 px-4 text-sm font-medium hover:bg-green-600 transition"
+            data-aos="zoom-in" data-aos-duration="1200">
+            Tambah List Baru
         </button>
+       
     </div>
 
-    <div class="kanban-board flex overflow-x-auto space-x-6 p-6 bg-blue-900 " style="height: 70vh">
+    <div class="kanban-board flex overflow-x-auto space-x-6 p-6 bg-gradient-to-r from-blue-400 to-purple-400" style="height: 70vh" data-aos="fade-left" data-aos-duration="1000">
         @foreach ($board->boardLists as $boardList)
             <div class="kanban-list bg-white rounded shadow-lg p-4 w-80 flex-shrink-0"
-                style="min-height: {{ max(count($boardList->tasks), 3) * 100 + 150 }}px;">
+                style="min-height: {{ max(count($boardList->tasks), 3) * 100 + 150 }}px;"
+                data-aos="fade-up" data-aos-duration="1000">
                 <!-- List Header -->
                 <div class="flex justify-between items-center mb-4">
                     <!-- Edit Board List Name -->
@@ -33,7 +42,7 @@
                     <div class="flex space-x-2">
                         <button class="ml-2 text-yellow-500 hover:text-yellow-700 text-md -mt-1"
                             onclick="openEditListModal({{ $boardList->id }}, '{{ $boardList->name }}')"
-                            title="Edit List Name">
+                            title="Edit List Name" data-aos="fade-up" data-aos-duration="1200">
                             <i class="fas fa-edit"></i>
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700"
                                 viewBox="0 0 348.882 348.882">
@@ -51,7 +60,8 @@
                             onsubmit="return confirm('Are you sure you want to delete this list?');">
                             @csrf
                             @method('DELETE')
-                            <button class="text-red-600 hover:text-red-800 text-md" title="Delete Board List">
+                            <button class="text-red-600 hover:text-red-800 text-md" title="Delete Board List"
+                                data-aos="fade-up" data-aos-duration="1300">
                                 <i class="fas fa-trash-alt"></i>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700"
                                     viewBox="0 0 24 24">
@@ -70,28 +80,24 @@
                 </div>
 
                 <!-- Task List -->
-                <ul class="space-y-4">
+                <ul class="space-y-4" id="task-list-{{ $boardList->id }}" data-board-id="{{ $boardList->id }}">
                     @foreach ($boardList->tasks as $task)
-                        <li
-                            class="bg-blue-50 border border-blue-200 text-blue-800 rounded-lg p-3 shadow-sm flex justify-between items-center">
+                        <li class="task-item bg-blue-50 border border-blue-200 text-blue-800 rounded-lg p-3 shadow-sm flex justify-between items-center"
+                            data-task-id="{{ $task->id }}" draggable="true">
                             <div class="flex items-center space-x-2">
-                                <!-- Checkbox to mark task as completed -->
-                                <input type="checkbox" class="task-checkbox" data-task-id="{{ $task->id }}"
-                                    {{ $task->completed ? 'checked' : '' }}
-                                    onchange="moveTaskToCompletedList({{ $task->id }}, this)">
+                                <!-- Custom checkbox to mark task as completed -->
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="task-checkbox" data-task-id="{{ $task->id }}"
+                                        {{ $task->completed ? 'checked' : '' }} onchange="moveTaskToCompletedList({{ $task->id }}, this)">
+                                    <span class="checkmark"></span>
+                                </label>
                                 <span>{{ $task->title }}</span>
                             </div>
-
                             <div class="flex space-x-2">
-                                <!-- Edit Task -->
-                                <button class="text-yellow-500 hover:text-yellow-700 text-sm"
-                                    onclick="openEditModal({{ $task->id }}, '{{ $task->title }}')" title="Edit Task">
+                                <button class="text-yellow-500 hover:text-yellow-700 text-sm" onclick="openEditModal({{ $task->id }}, '{{ $task->title }}')" title="Edit Task">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
-
-                                <!-- Delete Task -->
-                                <form action="{{ route('kanban.deleteTask', $task->id) }}" method="POST"
-                                    onsubmit="return confirm('Are you sure you want to delete this task?');">
+                                <form action="{{ route('kanban.deleteTask', $task->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this task?');">
                                     @csrf
                                     @method('DELETE')
                                     <button class="text-red-600 hover:text-red-800 text-sm" title="Delete Task">
@@ -102,6 +108,21 @@
                         </li>
                     @endforeach
                 </ul>
+                
+                <script>
+                    const taskList = document.getElementById("task-list-{{ $boardList->id }}");
+                    new Sortable(taskList, {
+                        group: 'tasks',
+                        animation: 150,
+                        onEnd(evt) {
+                            const taskId = evt.item.dataset.taskId;
+                            const newBoardListId = evt.from.dataset.boardId;
+                            // You can handle saving the new position of the task to the database here.
+                            console.log(`Task ${taskId} moved to board list ${newBoardListId}`);
+                        }
+                    });
+                </script>
+                
 
                 <!-- Add Task Form -->
                 <form action="{{ route('kanban.storeTask') }}" method="POST" class="mt-4 h-auto">
@@ -110,7 +131,8 @@
                     <input type="text" name="title" placeholder="New Task"
                         class="w-full border border-gray-300 rounded-lg p-2 text-sm">
                     <button type="submit"
-                        class="mt-2 w-full bg-blue-500 text-white rounded-lg py-2 text-sm font-medium hover:bg-blue-600 transition">
+                        class="mt-2 w-full bg-blue-500 text-white rounded-lg py-2 text-sm font-medium hover:bg-blue-600 transition"
+                        data-aos="zoom-in" data-aos-duration="1800">
                         Add Task
                     </button>
                 </form>
@@ -122,7 +144,7 @@
     </div>
 
     <!-- Modal for Add List -->
-    <div id="addListModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+    <div id="addListModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center" data-aos="zoom-in" data-aos-duration="500">
         <div class="bg-white rounded-lg shadow-lg p-6 w-96">
             <h3 class="text-lg font-semibold mb-4">Add New Board List</h3>
             <form action="{{ route('kanban.storeBoardList') }}" method="POST">
@@ -171,10 +193,10 @@
     <!-- Edit Modal for Board List Name -->
     <div id="editListModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
         <div class="bg-white rounded-lg shadow-lg p-6 w-96">
-            <h3 class="text-lg font-semibold mb-4">Edit Board List Name</h3>
+            <h3 class="text-lg font-semibold mb-4">Edit List Name</h3>
             <form id="editListForm" method="POST">
                 @csrf
-                @method('PATCH') <!-- Gunakan PATCH untuk update -->
+                <input type="hidden" name="_method" value="POST">
                 <input type="text" id="editListName" name="name"
                     class="w-full border border-gray-300 rounded-lg p-2 text-sm mb-4">
                 <div class="flex justify-end space-x-2">
@@ -191,56 +213,73 @@
         </div>
     </div>
 
-    <script>
-        function openEditModal(taskId, taskTitle) {
-            const modal = document.getElementById('editModal');
-            const form = document.getElementById('editForm');
-            const titleInput = document.getElementById('editTaskTitle');
+<script>
+    AOS.init();
+</script>
+<script>
+    function openEditModal(taskId, taskTitle) {
+        const modal = document.getElementById('editModal');
+        const form = document.getElementById('editForm');
+        const titleInput = document.getElementById('editTaskTitle');
 
-            modal.classList.remove('hidden');
-            form.action = `/tasks/${taskId}/update`; // Update URL dynamically
-            titleInput.value = taskTitle; // Set current task title
+        modal.classList.remove('hidden');
+        form.action = `/tasks/${taskId}/update`; // Update URL dynamically
+        titleInput.value = taskTitle; // Set current task title
+    }
+
+    function closeEditModal() {
+        const modal = document.getElementById('editModal');
+        modal.classList.add('hidden');
+    }
+
+    function openEditListModal(boardListId, listName) {
+        const modal = document.getElementById('editListModal');
+        const form = document.getElementById('editListForm');
+        const nameInput = document.getElementById('editListName');
+
+        modal.classList.remove('hidden');
+        form.action = `/board-lists/${boardListId}`; // Update URL dynamically
+        nameInput.value = listName; // Set current list name
+    }
+
+    function closeEditListModal() {
+        const modal = document.getElementById('editListModal');
+        modal.classList.add('hidden');
+    }
+
+    function moveTaskToCompletedList(taskId, checkbox) {
+        if (checkbox.checked) {
+            // Move the task to a "Completed" list (you could implement a feature to do this)
+            // You can make an AJAX request here to update the task's status or move it.
+            alert(`Task ${taskId} marked as completed`);
         }
+    }
+</script>
 
-        function closeEditModal() {
-            const modal = document.getElementById('editModal');
-            modal.classList.add('hidden');
+<script>
+    const taskList = document.getElementById("task-list-{{ $boardList->id }}");
+    new Sortable(taskList, {
+        group: 'tasks',
+        animation: 150,
+        onEnd(evt) {
+            const taskId = evt.item.dataset.taskId;
+            const newBoardListId = evt.from.dataset.boardId;
+            // You can handle saving the new position of the task to the database here.
+            console.log(`Task ${taskId} moved to board list ${newBoardListId}`);
         }
+    });
+</script>
 
-        function openEditListModal(boardListId, listName) {
-            const modal = document.getElementById('editListModal');
-            const form = document.getElementById('editListForm');
-            const nameInput = document.getElementById('editListName');
+<script>
+    function openAddListModal() {
+        const modal = document.getElementById('addListModal');
+        modal.classList.remove('hidden');
+    }
 
-            modal.classList.remove('hidden');
-            form.action = `/board-lists/${boardListId}`; // Update URL dynamically
-            nameInput.value = listName; // Set current list name
-        }
-
-        function closeEditListModal() {
-            const modal = document.getElementById('editListModal');
-            modal.classList.add('hidden');
-        }
-
-        function moveTaskToCompletedList(taskId, checkbox) {
-            if (checkbox.checked) {
-                // Move the task to a "Completed" list (you could implement a feature to do this)
-                // You can make an AJAX request here to update the task's status or move it.
-                alert(`Task ${taskId} marked as completed`);
-            }
-        }
-    </script>
-
-    <script>
-        function openAddListModal() {
-            const modal = document.getElementById('addListModal');
-            modal.classList.remove('hidden');
-        }
-
-        function closeAddListModal() {
-            const modal = document.getElementById('addListModal');
-            modal.classList.add('hidden');
-        }
-    </script>
+    function closeAddListModal() {
+        const modal = document.getElementById('addListModal');
+        modal.classList.add('hidden');
+    }
+</script>
 
 @endsection

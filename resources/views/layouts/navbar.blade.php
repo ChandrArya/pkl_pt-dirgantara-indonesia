@@ -27,8 +27,11 @@
                     <a href="javascript:void(0)"><img src="{{ asset('logo.jpeg') }}" alt="logo" class='w-20' /></a>
                 </li>
                 <li class='max-lg:border-b max-lg:py-3 px-3 text-center'>
-                    <a href='javascript:void(0)'
+                    <a href="{{route('kanban.index')}}"
                         class='hover:text-[#007bff] text-blue-900 block font-semibold text-base'>Home</a>
+                </li>
+                <li class='max-lg:border-b max-lg:py-3 px-3 text-center'>
+                    <a href="{{route('dashboard.user')}}" class='hover:text-[#007bff] text-blue-900 block font-semibold text-base'>Manajemen User</a>
                 </li>
             </ul>
         </div>
@@ -51,8 +54,7 @@
                     <!-- Dropdown Menu -->
                     <div id="profileMenu"
                         class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lihat Profil</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pengaturan</a>
+                       
                         <form action="{{ route('logout') }}" method="POST" class="border-t border-gray-200">
                             @csrf
                             <button type="submit"
