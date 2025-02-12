@@ -7,10 +7,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
 
 
-// Route::get('/', function () {
-//     return view('home');
-// })->name('home');
-
 Route::get('/', function () {
     return view('beranda');
 })->name('beranda');
@@ -35,11 +31,9 @@ Route::get('/galeri', function () {
     return view('galeri');
 })->name('galeri');
 
-Route::get('/informasi', function () {
-    return view('informasi');
-})->name('informasi');
-
-
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
 
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -51,6 +45,9 @@ Route::post('/register', [AuthController::class, 'register'])->name('post.regist
 Route::middleware('auth')->group(function () {
 
     Route::get('/dashboardkanban', [KanbanController::class, 'index'])->name('kanban.index');
+  
+    
+
 });
 
 Route::middleware(['auth', RoleMiddleware::class . ':PM,APM'])->group(function () {
@@ -63,6 +60,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':PM,APM'])->group(function (
     Route::delete('/tasks/{id}/delete', [KanbanController::class, 'deleteTask'])->name('kanban.deleteTask');
     Route::delete('/board-lists/{id}/delete', [KanbanController::class, 'deleteBoardList'])->name('kanban.deleteBoardList');
     Route::patch('/board-lists/{boardList}', [KanbanController::class, 'update'])->name('kanban.updateBoardList');
+    
 });
 
 
