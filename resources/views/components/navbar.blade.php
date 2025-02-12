@@ -16,7 +16,7 @@
             <li><a href="{{ route('beranda') }}" class="text-gray-700 hover:text-blue-600">BERANDA</a></li>
             <li><a href="{{ route('tentangkami') }}" class="text-gray-700 hover:text-blue-600">TENTANG KAMI</a></li>
             <li><a href="{{ route('galeri') }}" class="text-gray-700 hover:text-blue-600">GALERI</a></li>
-            <li><a href="{{ route('contact') }}" class="text-gray-700 hover:text-blue-600">CONTACT</a></li>
+            <li><a href="{{ route('contact') }}" class="text-gray-700 hover:text-blue-600">KONTAK</a></li>
         </ul>
 
         <!-- Tombol Login (Kanan) -->
@@ -41,7 +41,7 @@
             <li><a href="{{ route('beranda') }}" class="text-gray-700 hover:text-blue-600">BERANDA</a></li>
             <li><a href="{{ route('tentangkami') }}" class="text-gray-700 hover:text-blue-600">TENTANG KAMI</a></li>
             <li><a href="{{ route('galeri') }}" class="text-gray-700 hover:text-blue-600">GALERI</a></li>
-            <li><a href="{{ route('contact') }}" class="text-gray-700 hover:text-blue-600">INFORMASI</a></li>
+            <li><a href="{{ route('contact') }}" class="text-gray-700 hover:text-blue-600">KONTAK</a></li>
         </ul>
     </div>
 </nav>

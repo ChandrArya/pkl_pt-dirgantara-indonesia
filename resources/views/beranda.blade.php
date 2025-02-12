@@ -15,8 +15,6 @@
                     data-aos-delay="200">
                     Selamat Datang Di Department Spirit
                 </h1>
-                
-                
             </div>
         </section>
         <x-komponenpesawat></x-komponenpesawat>

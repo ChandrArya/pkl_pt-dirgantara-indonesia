@@ -166,9 +166,6 @@
     {{-- Navbar --}}
     @include('components.navbar')
 
-    <!-- Spacing untuk navbar -->
-    <div class="navbar-spacing"></div>
-
     <div class="container">
         <h1 class="section-title" data-aos="fade-down">Pesawat A350</h1>
         <div class="image-container" data-aos="fade-up">

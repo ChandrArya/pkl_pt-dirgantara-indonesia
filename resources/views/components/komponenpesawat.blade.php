@@ -1,12 +1,9 @@
-<section class="bg-gradient-to-br from-blue-50 to-blue-200 py-14 min-h-screen flex items-center">
+<section class="bg-gradient-to-br from-blue-50 to-blue-200 py-6 min-h-screen flex items-center">
     <div class="container mx-auto px-6 lg:px-20">
         <!-- Judul -->
-        <h2 class="text-4xl md:text-5xl font-bold text-center text-blue-900 mb-6 tracking-wide">
+        <h2 class="text-4xl md:text-5xl font-bold text-center text-blue-900 mb-12 tracking-wide">
             Komponen
         </h2>
-        <p class="text-center text-gray-700 mb-12 max-w-2xl mx-auto">
-            Jelajahi berbagai komponen dengan detail lengkap, spesifikasi, dan fitur unggulan yang tersedia di sini.
-        </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             <!-- Card 1 -->
