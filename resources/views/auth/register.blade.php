@@ -11,13 +11,17 @@
         <div class="flex flex-col justify-center sm:h-screen p-4 relative z-10">
               <!-- Logo dan Judul di Pojok Kiri -->
               <div class="absolute top-6 left-6 flex items-start space-x-4">
-                <img src="{{ asset('logo.png') }}" alt="Logo" class="w-16 h-16 rounded-full">
+                <img src="{{ asset('spirit.png') }}" alt="Logo" class="w-20 h-20 mr-3 object-contain">
+                
                 <div>
                     <h1 class="text-gray-100 text-xl font-medium uppercase">Task Management Department Spirit</h1>
                     <h1 class="text-gray-100 text-lg font-medium uppercase">PT. Dirgantara Indonesia</h1>
                 </div>
             </div>
             <div class="max-w-md w-full mx-auto border bg-white border-gray-300 rounded-2xl p-8">
+                <div class="flex items-center justify-center mb-3">
+                    <img src="{{asset('spirit.png')}}" alt="" class="w-20">
+                </div>
                 <div class="w-24 h-24 flex items-center justify-center mx-auto">
                     <h1 class="text-2xl font-bold font-sans">REGISTER</h1>
                 </div>

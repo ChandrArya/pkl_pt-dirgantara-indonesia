@@ -14,7 +14,7 @@
         <div class="min-h-screen flex flex-col items-center justify-center py-6 px-4 relative z-10">
             <!-- Logo dan Judul di Pojok Kiri -->
             <div class="absolute top-6 left-6 flex items-start space-x-4">
-                <img src="{{ asset('logo.png') }}" alt="Logo" class="w-16 h-16 rounded-full">
+                <img src="{{ asset('spirit.png') }}" alt="Logo" class="w-16 h-16 rounded-full object-contain">
                 <div>
                     <h1 class="text-gray-100 text-xl font-medium uppercase">Task Management Department Spirit</h1>
                     <h1 class="text-gray-100 text-lg font-medium uppercase">PT. Dirgantara Indonesia</h1>
